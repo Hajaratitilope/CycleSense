@@ -178,6 +178,7 @@ short_profile_map = {
     "Stable-Compact": "Your cycles are short but consistent.",
     "Stable-Delayed": "Your cycles are a bit longer than average but still predictable.",
     "Stable-Extended": "Your cycles run longer than usual but remain steady.",
+    "Mostly Steady-Balanced": "Your cycles are generally regular with only minor variations; mostly steady and reassuring",
     "Somewhat Irregular-Compact": "Your cycles are shorter but sometimes unpredictable.",
     "Somewhat Irregular-Delayed": "Your cycles can run long and vary more than usual.",
     "Somewhat Irregular-Extended": "Your cycles are extended and less predictable.",
