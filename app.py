@@ -37,8 +37,8 @@ if page == "User Reports":
     height_m = st.number_input("Height (m)", min_value=1.0, max_value=2.2, step=0.01)
     weight_kg = st.number_input("Weight (kg)", min_value=30.0, max_value=200.0, step=0.1)
     num_preg = st.number_input("Number of Pregnancies", min_value=0, max_value=20, step=1)
-    complications = st.radio("History of reproductive complications?", ["No", "Yes"])
-    complications = 1 if complications == "Yes" else 0
+    complications_opt = st.radio("History of reproductive complications?", ["No", "Yes"])
+    complications = 1 if complications_opt == "Yes" else 0
 
     # --- Cycle Data Input ---
     st.subheader("Cycle Data (last 3 cycles)")
@@ -63,9 +63,6 @@ if page == "User Reports":
             "EstimatedDayofOvulation": ovulation_day
         })
 
-    # --- Report Type Selection ---
-    report_type = st.selectbox("Select report type:", ["TTC User", "Clinician"])
-
     # --- Generate Report Button ---
     if st.button("Generate Report"):
         # Flatten cycle data into wide format
@@ -83,7 +80,7 @@ if page == "User Reports":
         # Assign user profile
         _, _, combined, logical = assign_user_profile(user_wide_df)
 
-        # Compute BMI
+        # Compute BMI (height_m has min 1.0, so safe)
         bmi = weight_kg / (height_m ** 2)
 
         # Build user info dictionary
@@ -97,16 +94,28 @@ if page == "User Reports":
             "cluster_label": combined
         }
 
-        # Generate appropriate report
-        if report_type == "TTC User":
-            report = make_ttc_report(**user_info)
-        elif report_type == "Clinician":
-            report = make_clinician_report(**user_info)
+        # Map report labels to functions
+        report_map = {
+            "TTC User": make_ttc_report,
+            "Clinician": make_clinician_report,
+        }
 
-        # Display report
-        st.subheader(f"{report_type} Report")
-        st.text(report)
-
+        # Create tabs and render each report inside its tab
+        tabs = st.tabs(list(report_map.keys()))
+        for tab, (report_name, report_function) in zip(tabs, report_map.items()):
+            with tab:
+                st.subheader(f"{report_name} Report")
+                try:
+                    result = report_function(**user_info)
+                    # If the function returns content instead of writing directly, render it
+                    if result is not None:
+                        if isinstance(result, str):
+                            st.markdown(result)
+                        else:
+                            st.write(result)
+                except Exception as e:
+                    st.error(f"Failed to render {report_name} report.")
+                    st.exception(e)
 
 # =========================================================
 # TECHNICAL REPORT PAGE
@@ -114,3 +123,17 @@ if page == "User Reports":
 elif page == "Technical Report":
     st.title("CycleSense Technical Report")
     make_technical_report()
+
+# =========================================================
+# FOOTER COPYRIGHT
+# =========================================================
+st.markdown("---")
+st.markdown(
+    """
+    <div style="text-align:center; font-size:0.9em; color:gray;">
+        © 2025 CycleSense by The Flow Finders. All rights reserved. <br>
+        Empowering women’s health through data-driven insights.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
