@@ -1,5 +1,3 @@
-# report.py
-
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
@@ -57,12 +55,13 @@ def make_ttc_report(name, age, bmi, num_preg, complications, logical, cluster_la
 
     return f"""Hi {name}, here’s your CycleSense summary:
 
-Your cycle profile: {logical}.
-{profile_short}
+**Your cycle profile**: {logical}.
 
-TTC Note: {ttc_note}
+**Cycle profile description**: {profile_short}
 
-Your stats: Age {age}, BMI {bmi:.1f}, {num_preg} pregnancies, {"with complications" if complications else "no complications"}.
+**TTC Note**: {ttc_note}
+
+**Your stats**: Age {age}, BMI {bmi:.1f}, {num_preg} pregnancies, {"with complications" if complications else "no complications"}.
 """
 
 
@@ -73,17 +72,19 @@ def make_clinician_report(name, age, bmi, num_preg, complications, logical, clus
 
     age_avg, bmi_avg, preg_avg, comp_rate = lookup_cluster_stats(logical)
 
-    return f"""Patient: {name}, {age}y
-Profile: {logical}
-Cluster: {profile_summary}
+    return f"""**Patient**: {name}, {age}y
 
-Demographics:
+**Profile**: {logical}
+
+**Cluster**: {profile_summary}
+
+**Demographics**:
 - Age {age} (cluster avg {fmt_num(age_avg, age)})
 - BMI {bmi:.1f} (cluster avg {fmt_num(bmi_avg, bmi)})
 - Pregnancies: {num_preg} (cluster avg {fmt_num(preg_avg, num_preg)})
 - Complications: {"Yes" if complications else "No"} (cluster rate {fmt_rate(comp_rate)})
 
-Interpretation: {clinical_note}
+**Interpretation**: {clinical_note}
 """
 
 
