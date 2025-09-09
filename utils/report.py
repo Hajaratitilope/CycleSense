@@ -59,7 +59,7 @@ def make_ttc_report(name, age, bmi, num_preg, complications, logical, cluster_la
 
 **Cycle profile description**: {profile_short}
 
-**TTC Note**: {ttc_note}
+**Profile Note**: {ttc_note}
 
 **Your stats**: Age {age}, BMI {bmi:.1f}, {num_preg} pregnancies, {"with complications" if complications else "no complications"}.
 """

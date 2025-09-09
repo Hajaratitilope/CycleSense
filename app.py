@@ -27,7 +27,7 @@ page = st.sidebar.radio("Go to", ["User Reports", "Technical Report"])
 # =========================================================
 if page == "User Reports":
     st.title("🌸 CycleSense")
-    st.markdown("**Personalized Menstrual Cycle Analysis and TTC Inference**")
+    st.markdown("**Personalized Menstrual Cycle Analysis and Trying To Conceive Inference**")
     st.caption("This application operates on information from the **last 3 recorded cycles**.")
 
     # --- User Demographic Inputs ---
@@ -96,7 +96,7 @@ if page == "User Reports":
 
         # Map report labels to functions
         report_map = {
-            "TTC User": make_ttc_report,
+            "Trying To Conceive User": make_ttc_report,
             "Clinician": make_clinician_report,
         }
 
